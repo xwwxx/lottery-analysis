@@ -18,6 +18,10 @@ node index.js -ud
 
 node index.js -a
 
+### 最新开奖号码
+
+node index.js -cn
+
 ### 数据展示
 
 直接访问index.html
