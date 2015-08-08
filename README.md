@@ -1,5 +1,7 @@
 ### 如何使用
 
+0. npm run init
+
 1. npm run start
 
 2. 用浏览器直接打开index.html

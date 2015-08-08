@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "init": "npm install && bower install",
     "start": "node index.js -ud && node index.js -a && node index.js -cn",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
