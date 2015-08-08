@@ -1,3 +1,5 @@
+![screenshots](screenshots.png)
+
 ### 如何使用
 
 0. npm run init
