@@ -13,6 +13,16 @@
 <body ng-app="app" ng-controller="AppCtrl">
 
     <div class="container">
+
+        <div class="well">
+            预测结果：
+            <button ng-repeat="item in predictNums" ng-class="{'btn-danger': !$last, 'btn-primary': $last}" class="btn" type="button">
+                <span class="badge">{{item}}</span>
+            </button>
+
+            <button class="btn btn-primary pull-right" ng-click="predictLotteryNumbers()">再来一组</button>
+        </div>
+
         <div class="row">
             <div ng-repeat="item in data" class="col-lg-2">
                 <table class="table table-bordered">

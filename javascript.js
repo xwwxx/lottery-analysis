@@ -35,21 +35,43 @@
         stat_blue: 6
       };
 
-      $scope.data = _.map(window.data, function(val, key) {
-        return {
-          title: titleMap[key],
-          data: handleData(val, indexMap[key])
+      // 预测的开奖号码
+      $scope.predictNums = [];
+
+      $scope.data = [];
+
+      /**
+       * 预测一组号码
+       */
+      $scope.predictLotteryNumbers = function() {
+        var fn = function() {
+          return _.chain($scope.data).map(function(item) { return predictLotteryNum(item.data); }).uniq().value();
+        };
+
+        var loop = true;
+        while(loop) {
+          var result = fn();
+          if (result.length == 7) { // 如果没有重复数字则结束
+            $scope.predictNums = result;
+            loop = false;
+          }
         }
-      });
+      };
 
       function handleData(arr, idx) {
         var result = signBoundary(arr);
         result = signNums(result, idx);
-        return _.sortBy(result, function(item) {
+        result = _.sortBy(result, function(item) {
           return item.stat;
         });
+        return result;
       }
 
+      /**
+       * 标志边界，即出现次数最小和最大值
+       * @param arr
+       * @returns {*}
+       */
       function signBoundary(arr) {
         var minItem = _.min(arr, function(item) { return item.stat; });
         var maxItem = _.max(arr, function(item) { return item.stat; });
@@ -58,11 +80,42 @@
         return arr;
       }
 
+      /**
+       * 标志最新的开奖号码
+       * @param arr
+       * @param idx
+       * @returns {*}
+       */
       function signNums(arr, idx) {
         var foundItem = _.find(arr, function(item) { return currentPeriodNums[idx] == item.num; });
         foundItem.match = true;
         return arr;
       }
+
+      /**
+       * 预测一个号码
+       */
+      function predictLotteryNum(arr) {
+        // 找到最新开奖号码与出现次数最多的号码之间的号码，然后随时选中一个作为预测号码
+        var startIdx = _.findIndex(arr, function(item) { return item.match; });
+        var rangeList = _.chain(arr).drop(startIdx).map(function(item) { return parseInt(item.num); }).value();
+        return rangeList[_.random(rangeList.length - 1)];
+      }
+
+      function _init() {
+
+        $scope.data = _.map(window.data, function(val, key) {
+          return {
+            title: titleMap[key],
+            data: handleData(val, indexMap[key])
+          }
+        });
+
+        $scope.predictLotteryNumbers();
+
+      }
+
+      _init();
 
     }]);
 
