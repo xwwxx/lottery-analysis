@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <script type="text/javascript" src="bower_components/lodash/lodash.js"></script>
+    <script type="text/javascript" src="bower_components/angularjs/angular.js"></script>
+    <script type="text/javascript" src="javascript.js"></script>
+    <script type="text/javascript" src="data.js"></script>
+</head>
+<body ng-app="app" ng-controller="AppCtrl">
+
+    <div class="container">
+        <div class="row">
+            <div ng-repeat="item in data" class="col-lg-2">
+                <table class="table table-bordered">
+                    <thead class="bg-info">
+                    <tr>
+                        <td colspan="2">{{item.title}}</td>
+                    </tr>
+                    <tr>
+                        <td>号码</td>
+                        <td>出现次数</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="subItem in item.data" ng-class="{'bg-danger': subItem.min, 'bg-success': subItem.max}">
+                        <td>{{subItem.num}}</td>
+                        <td>{{subItem.stat}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

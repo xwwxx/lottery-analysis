@@ -1,0 +1,21 @@
+{
+  "name": "lottery-analysis",
+  "main": "index.js",
+  "version": "0.0.0",
+  "authors": [
+    "danielxiaowxx <xiaohutu136@163.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angularjs": "~1.4.3",
+    "bootstrap": "~3.3.5",
+    "lodash": "~3.10.1"
+  }
+}
