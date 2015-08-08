@@ -8,6 +8,7 @@
     <script type="text/javascript" src="bower_components/angularjs/angular.js"></script>
     <script type="text/javascript" src="javascript.js"></script>
     <script type="text/javascript" src="data.js"></script>
+    <script type="text/javascript" src="current-num.js"></script>
 </head>
 <body ng-app="app" ng-controller="AppCtrl">
 
@@ -25,7 +26,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="subItem in item.data" ng-class="{'bg-danger': subItem.min, 'bg-success': subItem.max}">
+                    <tr ng-repeat="subItem in item.data" ng-class="{'bg-danger': subItem.min, 'bg-success': subItem.max, 'bg-warning': subItem.match}">
                         <td>{{subItem.num}}</td>
                         <td>{{subItem.stat}}</td>
                     </tr>

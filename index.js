@@ -64,7 +64,7 @@ function fetchDataTotalPage() {
 }
 
 /**
- * 1. 抓数据
+ * 抓数据
  */
 function fetchData(pageNum) {
   request('http://www.gdfc.org.cn/datas/history/twocolorball/history_' + pageNum + '.html').then(function(response) {
@@ -111,7 +111,10 @@ function fetchData(pageNum) {
   });
 }
 
-// 2. 分析各个位置的数字区间
+/**
+ * 分析各个位置的数字区间
+ * @returns {*}
+ */
 function analysisScope() {
 
   return Promise.props({
@@ -139,7 +142,10 @@ function analysisScope() {
   });
 }
 
-// 3. 统计出每个数字区间截至当前出现次数最低和最高的数字
+/**
+ * 统计出每个数字区间截至当前出现次数最低和最高的数字
+ * @returns {*}
+ */
 function statFrequency() {
   return Promise.props({
     stat_red_1: statFn('red_1'),
@@ -190,16 +196,47 @@ function analysis() {
   });
 }
 
+/**
+ * 取得当前开奖号码
+ */
+function getCurrrentLotteryNum() {
+  return request('http://www.gdfc.org.cn/datas/history/twocolorball/history_1.html').then(function(response) {
+    var contents = response[1];
+    var $ = cheerio.load(contents);
+    var trItems = $('div.play_R').find('table tr');
+    var result = [];
+    _.some(trItems, function(item, idx) {
+      if (idx == 1) { // 第二行为最新的开奖结果
+        var tdItems = $(item).find('td');
+        var luckyNos = _.chain($(tdItems[1]).attr('luckyno').replace(/(\d{2})/g, '$1,').split(',')).compact().value();
+        var blueNo = parseInt(luckyNos[6]);
+        result = _.chain(luckyNos).tap(function(array) {array.pop()}).sort().map(_.parseInt).value();
+        result.push(blueNo);
+        console.log(result);
+        fs.writeFile(process.cwd() + '/current-num.js', 'var currentPeriodNums = ' + JSON.stringify(result));
+        return true;
+      }
+    });
+    return result;
+  });
+}
+
 function main() {
   var command = process.argv[2];
   if (command == '-ud' || command == 'updateData') {
+    console.log('run updateData');
     updateData();
   } else if (command == '-a' || command == 'analysis') {
+    console.log('run analysis');
     analysis();
+  } else if (command == '-cn' || command == 'currentNum') {
+    console.log('run currentNum');
+    getCurrrentLotteryNum();
   } else {
     console.log('example: node index.js -ud \n');
     console.log('  -ud | updateData  ---- update data \n');
     console.log('  -a |  analysis    ---- analysis data \n');
+    console.log('  -cn |  currentNum    ---- current number \n');
   }
 }
 
