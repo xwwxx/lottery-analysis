@@ -2,6 +2,8 @@
 
 0. npm run init
 
+   首页项目初始化时需要执行，以后只需要从接下来的步骤开始即可
+
 1. npm run start
 
 2. 用浏览器直接打开index.html
