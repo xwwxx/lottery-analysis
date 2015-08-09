@@ -17,16 +17,25 @@
    黄色：最新开奖号码
 
 ### 更新数据
-
+```
 node index.js -ud
-
+```
 ### 数据分析
-
+```
 node index.js -a
-
+```
 ### 最新开奖号码
-
+```
 node index.js -cn
+```
+### 历史记录是否存在相同的开奖记录
+```
+node index.js -hdr
+```
+### 判断号码组是否已经开奖过
+```
+node index.js -ia groupNumber
+```
 
 ### 数据展示
 

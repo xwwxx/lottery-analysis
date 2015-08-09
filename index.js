@@ -221,6 +221,41 @@ function getCurrrentLotteryNum() {
   });
 }
 
+/**
+ * 是否存在重复记录
+ */
+function existDuplicateRecords() {
+  db.data.loadDatabaseAsync().then(function() {
+    return new Promise(function (resolve, reject) {
+      db.data.find({}).exec(function(err, docs) {
+        var result = _.chain(docs).groupBy(function(item) {
+          return [item.red_1, item.red_2, item.red_3, item.red_4, item.red_5, item.red_6, item.blue].join('');
+        }).filter(function(items) {
+          return items.length > 1 }
+        ).value();
+        console.log('Result: ', result.length > 1);
+        console.log(result);
+        resolve(result.length > 1);
+      });
+    })
+  });
+}
+
+/**
+ * 判断该组号码是否出现过
+ */
+function isGroupNumberAppeared(groupNumber) {
+  db.data.loadDatabaseAsync().then(function() {
+    return new Promise(function (resolve, reject) {
+      db.data.find({red_1: groupNumber[0], red_2: groupNumber[1], red_3: groupNumber[2], red_4: groupNumber[3], red_5: groupNumber[4], red_6: groupNumber[5], blue: groupNumber[6]}).exec(function(err, docs) {
+        console.log('Result: ', docs.length > 0);
+        console.log(docs);
+        resolve(docs.length > 1);
+      });
+    })
+  });
+}
+
 function main() {
   var command = process.argv[2];
   if (command == '-ud' || command == 'updateData') {
@@ -232,11 +267,25 @@ function main() {
   } else if (command == '-cn' || command == 'currentNum') {
     console.log('run currentNum');
     getCurrrentLotteryNum();
+  } else if (command == '-hdr' || command == 'historyDuplicateRecords') {
+    console.log('run historyDuplicateRecords');
+    existDuplicateRecords();
+  } else if (command == '-ia' || command == 'isAppeared') {
+    console.log('run isAppeared');
+    var groupNumber = (process.argv[3] || '').split(',');
+    if (groupNumber.length != 7) {
+      console.log('provide group number pls, like this: node index.js -ia 3,6,12,18,23,52,11');
+      return;
+    }
+    groupNumber = _.chain(groupNumber).map(_.parseInt).value();
+    isGroupNumberAppeared(groupNumber);
   } else {
     console.log('example: node index.js -ud \n');
-    console.log('  -ud | updateData  ---- update data \n');
-    console.log('  -a |  analysis    ---- analysis data \n');
-    console.log('  -cn |  currentNum    ---- current number \n');
+    console.log('  -ud  | updateData              ---- update data \n');
+    console.log('  -a   | analysis                ---- analysis data \n');
+    console.log('  -cn  | currentNum              ---- current number \n');
+    console.log('  -hdr | historyDuplicateRecords ---- is history exist duplicate records \n');
+    console.log('  -ia  | isAppeared groupNumber  ---- is group number appeared \n');
   }
 }
 
