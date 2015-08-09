@@ -23,6 +23,8 @@
             <button class="btn btn-primary pull-right" ng-click="predictLotteryNumbers()">再来一组</button>
         </div>
 
+        <pre>执行命令查看是否出现过该组号码: node index.js -ia {{predictNums.join(',')}}</pre>
+
         <div class="row">
             <div ng-repeat="item in data" class="col-lg-2">
                 <table class="table table-bordered">
