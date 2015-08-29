@@ -8,6 +8,7 @@
     <script type="text/javascript" src="bower_components/angularjs/angular.js"></script>
     <script type="text/javascript" src="javascript.js"></script>
     <script type="text/javascript" src="data.js"></script>
+    <script type="text/javascript" src="data_stat_follow.js"></script>
     <script type="text/javascript" src="current-num.js"></script>
 </head>
 <body ng-app="app" ng-controller="AppCtrl">
@@ -20,7 +21,10 @@
                 <span class="badge">{{item}}</span>
             </button>
 
-            <button class="btn btn-primary pull-right" ng-click="predictLotteryNumbers()">再来一组</button>
+            <div class="pull-right">
+                <button class="btn btn-primary" ng-click="predictLotteryNumbers()">算法一</button>
+                <button class="btn btn-primary" ng-click="predictLotteryNumbers2()">算法二</button>
+            </div>
         </div>
 
         <pre>执行命令查看是否出现过该组号码: node index.js -ia {{predictNums.join(',')}}</pre>

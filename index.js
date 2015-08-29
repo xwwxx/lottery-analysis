@@ -180,19 +180,15 @@ function analysis() {
   db.data.loadDatabaseAsync().then(function() {
     return Promise.props({
       analysisScope: analysisScope(),
-      statFrequency: statFrequency()
+      statFrequency: statFrequency(),
+      statNumbersAppearFollow: statNumbersAppearFollow()
     });
   }).then(function(data) {
     console.log(data.analysisScope);
 
-    // 保存成DB格式
-    db.stat.loadDatabaseAsync().then(function() {
-      return db.stat.removeAsync({}, { multi: true });
-    }).then(function() {
-      db.stat.insert(data.statFrequency);
-    });
     // 保存成JS格式
     fs.writeFile(process.cwd() + '/data.js', 'var data = ' + JSON.stringify(data.statFrequency));
+    fs.writeFile(process.cwd() + '/data_stat_follow.js', 'var dataStatFollow = ' + JSON.stringify(data.statNumbersAppearFollow));
   });
 }
 
@@ -254,6 +250,46 @@ function isGroupNumberAppeared(groupNumber) {
       });
     })
   });
+}
+
+function statNumbersAppearFollow() {
+  return new Promise(function (resolve, reject) {
+    db.data.find({}).sort({issue:1}).exec(function(err, docs) {
+      getCurrrentLotteryNum().then(function(currentNumbers) {
+        var results = [];
+        var fields = ['red_1', 'red_2', 'red_3', 'red_4', 'red_5', 'red_6', 'blue'];
+        _.each(fields, function(field, idx) {
+          results.push({
+            number: currentNumbers[idx],
+            field: field,
+            stat: numberAppearFollow(currentNumbers[idx], field, docs)
+          });
+        });
+
+        resolve(results);
+      });
+
+    });
+  });
+}
+
+function numberAppearFollow(num, field, docs) {
+
+  var allFollowNumbers = []; // 所有在num后面下期开奖的数字
+  _.each(docs, function(item, idx) {
+    if (item[field] == num) {
+      if (docs[idx + 1]) {
+        allFollowNumbers.push(docs[idx + 1][field]);
+      }
+    }
+  });
+
+  return _.chain(allFollowNumbers).countBy().map(function(count, number) {
+    return {
+      number: number,
+      count: count
+    }
+  }).sortBy(function(item) { return -item.count; }).value();
 }
 
 function main() {

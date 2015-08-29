@@ -41,7 +41,8 @@
       $scope.data = [];
 
       /**
-       * 预测一组号码
+       * 算法一：预测一组号码
+       * 从当前开奖号码与历史开奖号码概率最大的号码之间随机取一个号码
        */
       $scope.predictLotteryNumbers = function() {
         var fn = function() {
@@ -56,6 +57,16 @@
             loop = false;
           }
         }
+      };
+
+      /**
+       * 算法二：预测一组号码
+       * 从历史数据找出当前开奖号码历史最大机率下一期开奖的号码
+       */
+      $scope.predictLotteryNumbers2 = function() {
+        $scope.predictNums = _.map(dataStatFollow, function(item) {
+          return item.stat[0].number;
+        })
       };
 
       function handleData(arr, idx) {
