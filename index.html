@@ -50,6 +50,30 @@
                 </table>
             </div>
         </div>
+
+        <hr/>
+
+        <div class="row">
+            <div ng-repeat="item in dataStatFollow" class="col-lg-2">
+                <table class="table table-bordered">
+                    <thead class="bg-info">
+                    <tr>
+                        <td colspan="2">{{item.field}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">开奖号码: {{item.number}}</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="subItem in item.stat">
+                        <td>{{subItem.number}}</td>
+                        <td>{{subItem.count}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
 </body>

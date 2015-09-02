@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "init": "npm install && bower install",
+    "init": "npm install && bower install && gulp",
     "start": "node index.js -ud && node index.js -a && node index.js -cn",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,6 +13,9 @@
   "dependencies": {
     "bluebird": "^2.9.34",
     "cheerio": "^0.19.0",
+    "gulp": "^3.9.0",
+    "gulp-less": "^3.0.3",
+    "gulp-rename": "^1.2.2",
     "lodash": "^3.10.1",
     "nedb": "^1.1.2",
     "request": "^2.60.0"

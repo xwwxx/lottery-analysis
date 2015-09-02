@@ -315,6 +315,16 @@ function main() {
     }
     groupNumber = _.chain(groupNumber).map(_.parseInt).value();
     isGroupNumberAppeared(groupNumber);
+  } else if (command == '-af' || command == 'appearFollow') {
+    db.data.loadDatabaseAsync().then(function() {
+      db.data.find({}).sort({issue:1}).exec(function(err, docs) {
+        var number = process.argv[3];
+        var field = process.argv[4];
+        var result = numberAppearFollow(number, field, docs);
+        console.log(result);
+      });
+    });
+
   } else {
     console.log('example: node index.js -ud \n');
     console.log('  -ud  | updateData              ---- update data \n');
@@ -322,6 +332,7 @@ function main() {
     console.log('  -cn  | currentNum              ---- current number \n');
     console.log('  -hdr | historyDuplicateRecords ---- is history exist duplicate records \n');
     console.log('  -ia  | isAppeared groupNumber  ---- is group number appeared \n');
+    console.log('  -af  | appearFollow  ---- number appear follow. -af 2 red_1 eg. \n');
   }
 }
 
