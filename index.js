@@ -10,8 +10,8 @@ var fs = require("fs");
 var _ = require('lodash');
 
 db = {};
-db.data = Promise.promisifyAll(new Datastore('data.db'));
-db.stat = Promise.promisifyAll(new Datastore('stat.db'));
+db.data = Promise.promisifyAll(new Datastore('data/data.db'));
+db.stat = Promise.promisifyAll(new Datastore('data/stat.db'));
 
 function ClientError(e) {
   return e.code >= 400 && e.code < 500;
@@ -187,8 +187,8 @@ function analysis() {
     console.log(data.analysisScope);
 
     // 保存成JS格式
-    fs.writeFile(process.cwd() + '/data.js', 'var data = ' + JSON.stringify(data.statFrequency));
-    fs.writeFile(process.cwd() + '/data_stat_follow.js', 'var dataStatFollow = ' + JSON.stringify(data.statNumbersAppearFollow));
+    fs.writeFile(process.cwd() + '/data/data.js', 'var data = ' + JSON.stringify(data.statFrequency));
+    fs.writeFile(process.cwd() + '/data/data-stat-follow.js', 'var dataStatFollow = ' + JSON.stringify(data.statNumbersAppearFollow));
   });
 }
 
@@ -209,7 +209,7 @@ function getCurrrentLotteryNum() {
         result = _.chain(luckyNos).tap(function(array) {array.pop()}).sort().map(_.parseInt).value();
         result.push(blueNo);
         console.log(result);
-        fs.writeFile(process.cwd() + '/current-num.js', 'var currentPeriodNums = ' + JSON.stringify(result));
+        fs.writeFile(process.cwd() + '/data/current-num.js', 'var module = module || {}; var currentPeriodNums = module.exports = ' + JSON.stringify(result));
         return true;
       }
     });

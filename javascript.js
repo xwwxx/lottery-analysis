@@ -42,6 +42,8 @@
 
       $scope.dataStatFollow = dataStatFollow;
 
+      $scope.allAFnsTestResult = allAFnsTestResult;
+
       /**
        * 算法一：预测一组号码
        * 从当前开奖号码与历史开奖号码概率最大的号码之间随机取一个号码

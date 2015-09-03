@@ -6,10 +6,13 @@
     <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <script type="text/javascript" src="bower_components/lodash/lodash.js"></script>
     <script type="text/javascript" src="bower_components/angularjs/angular.js"></script>
+
     <script type="text/javascript" src="javascript.js"></script>
-    <script type="text/javascript" src="data.js"></script>
-    <script type="text/javascript" src="data_stat_follow.js"></script>
-    <script type="text/javascript" src="current-num.js"></script>
+
+    <script type="text/javascript" src="data/data.js"></script>
+    <script type="text/javascript" src="data/data-stat-follow.js"></script>
+    <script type="text/javascript" src="data/current-num.js"></script>
+    <script type="text/javascript" src="data/all-afns-test-result.js"></script>
 </head>
 <body ng-app="app" ng-controller="AppCtrl">
 
@@ -66,8 +69,36 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="subItem in item.stat">
-                        <td>{{subItem.number}}</td>
+                        <td class="bg-success">{{subItem.number}}</td>
                         <td>{{subItem.count}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="row">
+            <div ng-repeat="item in allAFnsTestResult" class="col-lg-7">
+                <table class="table table-bordered">
+                    <thead class="bg-info">
+                    <tr>
+                        <td colspan="2">{{item.desc}}</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>准确率：{{item.successRate}}</td>
+                    </tr>
+                    <tr>
+                        <td>准确率(<=1个误差)：{{item.nearSuccess1}}</td>
+                    </tr>
+                    <tr>
+                        <td>准确率(<=2个误差)：{{item.nearSuccess2}}</td>
+                    </tr>
+                    <tr class="bg-danger">
+                        <td>杀红球：{{item.killRedNums}}</td>
                     </tr>
                     </tbody>
                 </table>
