@@ -13,6 +13,8 @@
     <script type="text/javascript" src="data/data-stat-follow.js"></script>
     <script type="text/javascript" src="data/current-num.js"></script>
     <script type="text/javascript" src="data/all-afns-test-result.js"></script>
+    <script type="text/javascript" src="data/hot-cold-analysis-result.js"></script>
+    <script type="text/javascript" src="data/kill-data.js"></script>
 </head>
 <body ng-app="app" ng-controller="AppCtrl">
 
@@ -69,13 +71,50 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="subItem in item.stat">
-                        <td class="bg-success">{{subItem.number}}</td>
+                        <td ng-class="{'bg-warning': subItem.isKillRed, 'bg-success': !subItem.isKillRed}">{{subItem.number}}</td>
                         <td>{{subItem.count}}</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+
+        <hr/>
+
+        <table class="table table-bordered">
+            <thead class="bg-info">
+            <tr>
+                <th>标题</th>
+                <th>球色</th>
+                <th>杀号</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in killData">
+                <td>{{item.title}}</td>
+                <td>{{item.type}}</td>
+                <td>{{item.numbers}}</td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    红球:
+                    <span ng-repeat="item in allRedNumbers" ng-class="{'text-danger': !item.kill, 'text-muted': item.kill}">
+                        <h3 style="display: inline-block" ng-show="!item.kill">{{item.number}}</h3>
+                        <span ng-show="item.kill">{{item.number}}</span> ,
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    蓝球:
+                    <span ng-repeat="item in allBlueNumbers" ng-class="{'text-primary': !item.kill, 'text-muted': item.kill}">
+                        <h3 style="display: inline-block" ng-show="!item.kill">{{item.number}}</h3>
+                        <span ng-show="item.kill">{{item.number}}</span> ,
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
         <hr/>
 
@@ -99,6 +138,68 @@
                     </tr>
                     <tr class="bg-danger">
                         <td>杀红球：{{item.killRedNums}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="row">
+            <div class="col-lg-7">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr class="bg-info">
+                        <th colspan="2">前N期未出现过的号码</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in hotColdAnalysisResult.notAppear">
+                        <td>{{item.per}}</td>
+                        <td>{{item.notAppearNums}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            前8期中未开过的号码选1-2个
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-lg-7">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr class="bg-info">
+                        <th colspan="2">前N期只出现过1次的号码</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in hotColdAnalysisResult.appear1Time">
+                        <td>{{item.per}}</td>
+                        <td>{{item.appearNums}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            分析的结果是前2期中开过1次的号码选1-2个
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-lg-7">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr class="bg-info">
+                        <th colspan="2">前N期出现过2次的号码</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in hotColdAnalysisResult.appear2Time">
+                        <td>{{item.per}}</td>
+                        <td>{{item.appearNums}}</td>
                     </tr>
                     </tbody>
                 </table>

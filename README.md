@@ -36,6 +36,10 @@ node index.js -hdr
 ```
 node index.js -ia groupNumber
 ```
+### 当期杀球数据展示 
+```
+node kill-analysis.js
+```
 
 ### 数据展示
 
@@ -50,3 +54,11 @@ node index.js -ia groupNumber
 2.5期以内出现一次的选项3-6个
 3.5期以内出现2次的选2-4个
 5.5期以内出现3次的选0-2个
+
+#### 网上杀球参考
+
+蓝球：http://taobao.cjcp.com.cn/shdd/ssq-lq.html
+     http://trend.baidu.lecai.com/ssq/blueKillTrend.action
+     http://888.sports.qq.com/v1.0/buy/ssq.shtml
+
+红球：http://taobao.cjcp.com.cn/shdd/ssq-hq.html（以这个为准即可）

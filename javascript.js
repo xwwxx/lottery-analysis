@@ -40,9 +40,56 @@
 
       $scope.data = [];
 
+      $scope.allRedNumbers = _.map(_.range(1, 34), function(item) {
+        return {
+          number: item
+        }
+      });
+
+      $scope.allBlueNumbers = _.map(_.range(1, 17), function(item) {
+        return {
+          number: item
+        }
+      });
+
       $scope.dataStatFollow = dataStatFollow;
 
       $scope.allAFnsTestResult = allAFnsTestResult;
+
+      $scope.hotColdAnalysisResult = hotColdAnalysisResult;
+
+      $scope.killData = _.map(killData, function(item) {
+        item.numbers = item.result.join(' , ');
+        return item;
+      });
+
+      $scope.allKillRedNumbers = _.chain(killData)
+        .filter({type: 'red'})
+        .map('result')
+        .flatten()
+        .uniq()
+        .sortBy()
+        .value();
+
+      $scope.allKillBlueNumbers = _.chain(killData)
+        .filter({type: 'blue'})
+        .map('result')
+        .flatten()
+        .uniq()
+        .sortBy()
+        .value();
+
+      _.each($scope.allRedNumbers, function(item) {
+        if ($scope.allKillRedNumbers.indexOf(item.number) >= 0) {
+          item.kill = true;
+        }
+      });
+
+      _.each($scope.allBlueNumbers, function(item) {
+        if ($scope.allKillBlueNumbers.indexOf(item.number) >= 0) {
+          item.kill = true;
+        }
+      });
 
       /**
        * 算法一：预测一组号码
@@ -128,6 +175,18 @@
 
         $scope.predictLotteryNumbers();
 
+        var allKillReds = _.chain(allAFnsTestResult).map(function(item) {
+          return item.killRedNums;
+        }).flatten(true).sortBy().value();
+        _.each($scope.dataStatFollow, function(item) {
+          if (item.field != 'blue') {
+            _.each(item.stat, function(statItem) {
+              if (allKillReds.indexOf(_.parseInt(statItem.number)) >= 0) {
+                statItem.isKillRed = true;
+              }
+            });
+          }
+        });
       }
 
       _init();
